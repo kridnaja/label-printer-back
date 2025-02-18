@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `order` MODIFY `SKU` VARCHAR(191) NULL;

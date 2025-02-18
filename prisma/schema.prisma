@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+   previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Order {
+  Id                   Int      @id @default(autoincrement())
+  OrderId               String   @unique @db.VarChar(500)
+  SKUArtwork_Preview    String?  @db.VarChar(500)
+  SKU                   String?
+  CustomerCustomer_Code String?
+  CustomerAdded_Time    String?
+  Delivery_Method       String?
+  Quantity              String?
+  Status                String?
+  Administrator         String?
+  Address               String?
+  Address_Details       String?  @db.VarChar(500)
+  SKU_Artwork_File      String?  @db.VarChar(500)
+  Material              String?
+  PrintStatus           Boolean?
+  Recipient             String?
+  Image                 String? 
+
+  @@fulltext([Recipient,OrderId,SKUArtwork_Preview,SKU,Address,Address_Details,CustomerCustomer_Code,CustomerAdded_Time,Delivery_Method,Administrator,Material, Status])
+@@map("Order")
+}
+
+model Admin {
+  id       Int     @id @unique @default(autoincrement())
+  username String?
+  password String?
+  loginLogoutTime LoginLogoutTime[]
+}
+
+
+model LoginLogoutTime {
+   id       Int     @id @unique @default(autoincrement())
+   adminId   Int
+   admin           Admin        @relation(fields: [adminId], references: [id])
+   login String?
+   logout String?
+}
